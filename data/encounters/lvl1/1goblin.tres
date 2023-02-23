@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="EncounterData" load_steps=3 format=3 uid="uid://bfr54bono20g1"]
+
+[ext_resource type="Script" path="res://data/EncounterData.gd" id="1_77sto"]
+[ext_resource type="Resource" path="res://data/enemies/lvl1/goblin.tres" id="1_kmn0i"]
+
+[resource]
+script = ExtResource("1_77sto")
+enemies = Array[Resource("res://data/EnemyData.gd")]([ExtResource("1_kmn0i")])

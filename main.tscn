@@ -1,0 +1,184 @@
+[gd_scene load_steps=6 format=3 uid="uid://cpi6xwmpbd6yw"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_krnk3"]
+[ext_resource type="Script" path="res://TurnQueue.gd" id="4_jhlys"]
+
+[sub_resource type="Animation" id="Animation_txmcd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GUI/HurtRect:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GUI/HurtRect:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.752941, 0.0509804, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5ck6v"]
+resource_name = "hurt"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GUI/HurtRect:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GUI/HurtRect:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0.752941, 0.0509804, 0, 0), Color(0.752941, 0.0509804, 0, 0.756863), Color(0.752941, 0.0509804, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j2hac"]
+_data = {
+"RESET": SubResource("Animation_txmcd"),
+"hurt": SubResource("Animation_5ck6v")
+}
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_krnk3")
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Options" type="Control" parent="CanvasLayer/GUI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -338.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GUI/Options"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.184314, 0.184314, 0.184314, 0.627451)
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/GUI/Options"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+columns = 2
+
+[node name="Attack" type="Button" parent="CanvasLayer/GUI/Options/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 3
+text = "Attack"
+
+[node name="Spells" type="Button" parent="CanvasLayer/GUI/Options/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 3
+text = "Spells"
+
+[node name="Items" type="Button" parent="CanvasLayer/GUI/Options/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 3
+text = "Items
+"
+
+[node name="Character" type="Button" parent="CanvasLayer/GUI/Options/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 15
+size_flags_vertical = 3
+text = "Character
+"
+
+[node name="HPLabel" type="Label" parent="CanvasLayer/GUI"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 15.0
+offset_right = 54.0
+offset_bottom = 38.0
+text = "HP: ##"
+
+[node name="HurtRect" type="ColorRect" parent="CanvasLayer/GUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.752941, 0.0509804, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/GUI"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_j2hac")
+}
+
+[node name="AdvanceButton" type="Button" parent="CanvasLayer/GUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -107.5
+offset_top = -234.0
+offset_right = 107.5
+offset_bottom = -41.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Advance to
+next fight"
+
+[node name="TurnQueue" type="Node" parent="."]
+script = ExtResource("4_jhlys")
+
+[connection signal="pressed" from="CanvasLayer/GUI/Options/GridContainer/Attack" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="CanvasLayer/GUI/AdvanceButton" to="." method="_on_advance_button_pressed"]
